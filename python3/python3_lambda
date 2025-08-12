@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+import requests
+import sys
+
+# Lista de códigos HTTP considerados como "ativos"
+STATUS_CODES_ATIVOS = [200, 201, 202, 301, 302]
+
+# Lista inicial de domínios passada via sys.argv
+dominios = list(sys.argv[1:])
+
+# Garante que a URL tenha http:// ou https://
+corrigir_url = lambda url: url if url.startswith(("http://", "https://")) else f"http://{url}"
+
+# Funções curtas com lambda
+status_dominio = lambda url: requests.get(corrigir_url(url), timeout=5).status_code
+esta_ativo = lambda code: code in STATUS_CODES_ATIVOS
+adicionar = lambda dominio: dominios.append(dominio)
+remover = lambda dominio: dominios.remove(dominio) if dominio in dominios else None
+verificar_todos = lambda: [(d, status_dominio(d)) for d in dominios]
+
+def mostrar_resultados():
+    for dominio, code in verificar_todos():
+        print(f"{corrigir_url(dominio)} - {code} - {'Ativo' if esta_ativo(code) else 'Inativo'}")
+
+if __name__ == "__main__":
+    if not dominios:
+        print(f"Uso: {sys.argv[0]} dominio1 dominio2 ...")
+        sys.exit(1)
+    mostrar_resultados()

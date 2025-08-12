@@ -1,0 +1,145 @@
+"""
+Guia Completo de Fundamentos Python 3
+
+1. Funções em Python 3
+----------------------
+Funções são blocos de código reutilizáveis que recebem parâmetros, processam dados e retornam resultados.
+
+Exemplo de função com return:
+
+def soma(a, b):
+    return a + b
+
+# Uso do return:
+resultado = soma(3, 4)  # resultado recebe 7
+print(resultado)        # Imprime 7
+
+# Também pode imprimir direto o retorno:
+print(soma(10, 5))     # Imprime 15
+
+---
+
+2. Métodos comuns de listas e strings
+-------------------------------------
+
+Listas são coleções ordenadas e mutáveis:
+
+frutas = ["maçã", "banana", "laranja"]
+
+- append(valor): adiciona um item ao final da lista
+
+frutas.append("uva")
+print(frutas)  # ['maçã', 'banana', 'laranja', 'uva']
+
+- remove(valor): remove a primeira ocorrência do valor
+
+frutas.remove("banana")
+print(frutas)  # ['maçã', 'laranja', 'uva']
+
+Strings são sequências de caracteres (imutáveis):
+
+texto = "  Python  "
+
+- strip(): remove espaços em branco do começo e fim da string
+
+print(texto.strip())  # 'Python'
+
+- split(separador): divide a string em uma lista, usando o separador
+
+csv = "maçã,banana,laranja"
+lista = csv.split(",")
+print(lista)  # ['maçã', 'banana', 'laranja']
+
+---
+
+3. Dicionários em Python
+------------------------
+
+Dicionários armazenam pares chave-valor:
+
+pessoa = {"nome": "Ana", "idade": 25}
+
+# Acesso:
+
+print(pessoa["nome"])  # Ana
+
+# Adicionar/alterar:
+
+pessoa["cidade"] = "São Paulo"
+
+# Remover:
+
+del pessoa["idade"]
+
+print(pessoa)  # {'nome': 'Ana', 'cidade': 'São Paulo'}
+
+---
+
+4. Arquivos especiais em pacotes Python: __init__.py e __main__.py
+-------------------------------------------------------------------
+
+- __init__.py:
+  * Arquivo especial que indica que uma pasta é um pacote Python.
+  * Executado quando o pacote é importado.
+  * Pode conter inicializações ou imports para facilitar o uso do pacote.
+  * Exemplo:
+  
+  meu_pacote/
+    __init__.py
+    modulo.py
+
+  Conteúdo de __init__.py:
+  
+  print("Pacote importado")
+
+- __main__.py:
+  * Arquivo que é executado quando você roda o pacote como script:
+  
+    python -m meu_pacote
+
+  * Define o ponto de entrada do programa.
+  * Exemplo:
+  
+  meu_pacote/
+    __main__.py
+
+  Conteúdo de __main__.py:
+  
+  print("Pacote executado como script")
+
+---
+
+Resumo:
+
+- Funções criam blocos reutilizáveis, usam return para devolver valores.
+- Listas armazenam coleções mutáveis; append adiciona; remove exclui.
+- Strings podem ser limpas (strip) e divididas (split).
+- Dicionários guardam dados com chave e valor.
+- __init__.py configura pacotes para importação.
+- __main__.py define a execução de pacotes como programas.
+
+"""
+
+# Exemplo rápido com tudo junto:
+
+def soma(a, b):
+    return a + b
+
+lista = ["maçã", "banana"]
+lista.append("laranja")
+lista.remove("banana")
+
+texto = "  Olá mundo  "
+texto_limpo = texto.strip()
+
+frutas = texto_limpo.split(" ")
+
+pessoa = {"nome": "Carlos", "idade": 30}
+pessoa["cidade"] = "Rio"
+del pessoa["idade"]
+
+print("Soma:", soma(2, 3))
+print("Lista:", lista)
+print("Texto limpo:", texto_limpo)
+print("Frutas:", frutas)
+print("Dicionário:", pessoa)
