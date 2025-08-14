@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+set -e  # Sai se qualquer comando falhar
+
+echo "[*] Configurando micro para autocomplete Python..."
+
+# 1. Verificar se o micro está instalado
+if ! command -v micro &> /dev/null; then
+    echo "[✘] Micro não encontrado!"
+    echo "    Instale com: curl https://getmic.ro | bash"
+    exit 1
+else
+    echo "[✔] Micro encontrado!"
+fi
+
+# 2. Instalar o plugin LSP do micro
+echo "[*] Instalando plugin LSP..."
+micro -plugin install lsp
+
+# 3. Instalar o python-lsp-server
+echo "[*] Instalando python-lsp-server..."
+python3 -m pip install --upgrade pip
+python3 -m pip install python-lsp-server
+
+# 4. Configurar o micro para usar o pylsp
+CONFIG_DIR="$HOME/.config/micro"
+SETTINGS_FILE="$CONFIG_DIR/settings.json"
+
+mkdir -p "$CONFIG_DIR"
+
+if [ -f "$SETTINGS_FILE" ]; then
+    # Se já existir, apenas atualiza (sem sobrescrever outras configs)
+    if grep -q '"lsp.server"' "$SETTINGS_FILE"; then
+        sed -i 's/"lsp.server".*/"lsp.server": "pylsp"/' "$SETTINGS_FILE"
+    else
+        # Insere antes da última chave }
+        sed -i 's/}/,\n    "lsp.server": "pylsp"\n}/' "$SETTINGS_FILE"
+    fi
+else
+    # Criar do zero
+    cat > "$SETTINGS_FILE" <<EOF
+{
+    "lsp.server": "pylsp"
+}
+EOF
+fi
+
+echo "[✔] Configuração salva em $SETTINGS_FILE"
+
+echo -e "\n[✔] Tudo pronto! Agora abra o micro e teste com:"
+echo "    import requests"
+echo "    requests.<TAB>"
