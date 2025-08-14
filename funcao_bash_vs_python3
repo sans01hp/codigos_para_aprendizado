@@ -1,0 +1,104 @@
+# Guia de Funções: Bash vs Python3
+
+"""
+Este guia explica funções em Python3 e Bash, com foco em variáveis locais e escopo.
+"""
+
+# -----------------------------
+# 1. O que é uma função?
+# -----------------------------
+# Uma função é um bloco de código que pode ser chamado várias vezes no programa,
+# permitindo reutilização e organização.
+
+# -----------------------------
+# 2. Funções em Python3
+# -----------------------------
+
+# Sintaxe básica
+def nome_da_funcao(param1, param2):
+    # corpo da função
+    resultado = param1 + param2
+    return resultado  # retorna o valor para quem chamou
+
+# Exemplo de uso
+x_global = 10
+
+def soma_local(x_local):
+    x_local += 5
+    return x_local
+
+resultado = soma_local(x_global)
+print("Valor dentro da função:", resultado)
+print("Valor da variável global:", x_global)
+
+# Observações:
+# - Variáveis passadas como parâmetros criam variáveis locais dentro da função.
+# - Alterar a variável local não afeta a variável global.
+# - Para alterar uma variável global explicitamente:
+def altera_global():
+    global x_global
+    x_global += 5
+
+# -----------------------------
+# 3. Funções em Bash (exemplo)
+# -----------------------------
+bash_example = """
+#!/bin/bash
+
+# Definindo função
+minha_funcao() {
+    local param1=$1  # primeiro argumento
+    local param2=$2  # segundo argumento
+    echo "Dentro da função: $param1, $param2"
+}
+
+# Chamando a função
+minha_funcao "valor1" "valor2"
+
+# Exemplo com variável global
+x_global=10
+
+minha_funcao() {
+    local x_local=$1
+    x_local=$((x_local + 5))
+    echo "Valor dentro da função: $x_local"
+}
+
+minha_funcao $x_global
+echo "Valor fora da função: $x_global"
+
+# Observações:
+# - 'local' define variável local à função, protegendo a global.
+# - $1, $2, ... -> argumentos da função
+# - $@ -> todos os argumentos
+# - $# -> quantidade de argumentos
+"""
+
+print("\nExemplo Bash:\n", bash_example)
+
+# -----------------------------
+# 4. Comparação Python x Bash
+# -----------------------------
+comparacao = """
+| Conceito                  | Python3                         | Bash                               |
+|----------------------------|---------------------------------|-----------------------------------|
+| Definir função             | def nome(param1, param2):       | nome_da_funcao() { ... }          |
+| Passar parâmetros          | (param1, param2)               | $1, $2, $@                         |
+| Variáveis locais           | Criadas ao receber parâmetros   | local var=$1                        |
+| Retornar valor             | return valor                   | echo valor (ou manipular variável global) |
+| Acessar variável global    | global x                        | sem 'local' a variável global pode ser modificada |
+"""
+
+print("\nComparação Python x Bash:\n", comparacao)
+
+# -----------------------------
+# 5. Boas práticas
+# -----------------------------
+boas_praticas = """
+1. Sempre use variáveis locais dentro das funções, evitando efeitos colaterais.
+2. Retorne valores ao invés de modificar variáveis globais, quando possível.
+3. Em Bash, use 'local' para proteger variáveis passadas como argumento.
+4. Em Python, evite alterar globais sem necessidade; use parâmetros e 'return'.
+"""
+
+print("\nBoas práticas:\n", boas_praticas)
