@@ -1,0 +1,73 @@
+#!/usr/bin/env python3
+
+import sys
+import os
+import subprocess
+
+# =========================================
+# ANSI COLORS
+# =========================================
+RESET   = "\033[0m"
+BOLD    = "\033[1m"
+
+RED     = "\033[0;31m"
+GREEN   = "\033[0;32m"
+YELLOW  = "\033[0;33m"
+BLUE    = "\033[0;34m"
+MAGENTA = "\033[0;35m"
+CYAN    = "\033[0;36m"
+WHITE   = "\033[0;37m"
+
+# =========================================
+# FUNÇÃO PARA PRINT COLORIDO
+# =========================================
+def print_colorido(texto, cor=WHITE):
+    print(f"{cor}{texto}{RESET}")
+
+# =========================================
+# VERIFICA ARGUMENTOS
+# =========================================
+def verificar_argumentos():
+    if len(sys.argv) < 2:
+        print_colorido("⚠️  Uso: python3 exemplo_completo_ansi.py <diretorio>", YELLOW)
+        sys.exit(1)
+    else:
+        print_colorido(f"📁 Diretório fornecido: {sys.argv[1]}", CYAN)
+
+# =========================================
+# LISTA OS ARQUIVOS DE UM DIRETÓRIO
+# =========================================
+def listar_arquivos(diretorio):
+    try:
+        arquivos = os.listdir(diretorio)
+        print_colorido("📂 Conteúdo do diretório:", GREEN)
+        for arquivo in arquivos:
+            print(f"  → {arquivo}")
+    except FileNotFoundError:
+        print_colorido("❌ Diretório não encontrado!", RED)
+        sys.exit(1)
+
+# =========================================
+# EXECUTA UM SCRIPT BASH EXTERNO
+# =========================================
+def executar_script():
+    print_colorido("⚙️  Executando script bash (exemplo.sh)...", MAGENTA)
+    try:
+        resultado = subprocess.run(["bash", "exemplo.sh"], capture_output=True, text=True)
+        print_colorido("📤 Saída do script:", BLUE)
+        print(resultado.stdout)
+
+        if resultado.stderr:
+            print_colorido("⚠️  Erros:", RED)
+            print(resultado.stderr)
+
+    except FileNotFoundError:
+        print_colorido("❌ O script exemplo.sh não foi encontrado.", RED)
+
+# =========================================
+# FLUXO PRINCIPAL
+# =========================================
+verificar_argumentos()
+diretorio = sys.argv[1]
+listar_arquivos(diretorio)
+executar_script()

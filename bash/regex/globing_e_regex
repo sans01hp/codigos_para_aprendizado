@@ -1,0 +1,68 @@
+#!/bin/bash
+
+echo "=== Tabela de Globbing (usado com == ou !=) ==="
+echo "Caracter  | Significado"
+echo "---------|----------------------------"
+echo "*        | Corresponde a qualquer sequência de caracteres"
+echo "?        | Corresponde a exatamente um caractere"
+echo "[abc]    | Corresponde a qualquer caractere dentro dos colchetes (a, b ou c)"
+echo "[!abc]   | Corresponde a qualquer caractere exceto os dentro dos colchetes"
+echo "[a-z]    | Corresponde a qualquer caractere na faixa de 'a' a 'z'"
+echo
+
+echo "=== Exemplos de Globbing ==="
+
+file="documento.txt"
+
+# Testa se a variável termina com ".txt" (globbing)
+if [[ "$file" == *.txt ]]; then
+  echo "O arquivo termina com .txt (globbing)"
+fi
+
+# Testa se o arquivo começa com "doc" (globbing)
+if [[ "$file" == doc* ]]; then
+  echo "O arquivo começa com doc (globbing)"
+fi
+
+# Testa se o arquivo contém "ment" em qualquer lugar (globbing)
+if [[ "$file" == *ment* ]]; then
+  echo "O arquivo contém 'ment' (globbing)"
+fi
+
+echo
+echo "=== Tabela de Regex (usado com =~) ==="
+echo "Caracter  | Significado"
+echo "---------|----------------------------"
+echo "^        | Início da string"
+echo "$        | Fim da string"
+echo "."      | Qualquer caractere único"
+echo "*"      | Zero ou mais ocorrências do caractere anterior"
+echo "+"      | Uma ou mais ocorrências do caractere anterior"
+echo "[]       | Classe de caracteres, ex: [a-zA-Z]"
+echo "[^]      | Negação da classe de caracteres"
+echo "\\       | Escape para caracteres especiais"
+echo
+
+echo "=== Exemplos de Regex ==="
+
+url="https://exemplo.com"
+
+# Testa se a URL começa com "https://" (regex)
+if [[ "$url" =~ ^https:// ]]; then
+  echo "A URL começa com https:// (regex)"
+fi
+
+# Testa se a URL termina com ".com" (regex)
+if [[ "$url" =~ \.com$ ]]; then
+  echo "A URL termina com .com (regex)"
+fi
+
+# Testa se a URL contém um domínio com letras e números (regex)
+if [[ "$url" =~ ^https://[a-zA-Z0-9.-]+ ]]; then
+  echo "A URL tem domínio válido (regex)"
+fi
+
+# Exemplo de negação: a URL NÃO começa com http:// (regex)
+if [[ ! "$url" =~ ^http:// ]]; then
+  echo "A URL não começa com http:// (regex com negação)"
+fi

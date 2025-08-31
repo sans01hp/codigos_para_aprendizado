@@ -1,0 +1,128 @@
+Revisão sobre Problemas de Conexão SSH
+
+SSH (Secure Shell) é uma forma segura de acessar um sistema remoto por meio de linha de comando. No entanto, problemas de conexão são comuns. Este guia visa revisar causas comuns e soluções.
+
+---
+
+1. Erro "No route to host"
+
+Causa:
+* Problema de rede: o host remoto não está acessível pela rede.
+* IP incorreto.
+* Firewall bloqueando conexão.
+* Interface de rede mal configurada.
+
+Solução:
+* Verificar se o IP está correto (ex: `ip a` na VM).
+* Testar conexão com `ping` (do host para o IP da VM).
+* Garantir que a VM está com rede Bridge ou Host-Only bem configurada.
+* Desabilitar firewalls temporariamente para testes.
+
+---
+
+2. Erro "Permission denied (publickey, password)"
+
+Causa:
+* Usuário incorreto.
+* Senha errada.
+* SSH configurado para não aceitar senha.
+* Login remoto desabilitado para o usuário.
+
+Solução:
+* Usar exatamente o nome do usuário do sistema remoto:
+  ssh usuario@ip
+* Verificar o arquivo /etc/ssh/sshd_config:
+
+  PermitRootLogin yes  
+  PasswordAuthentication yes  
+  UsePAM yes
+
+* Reiniciar o SSH:
+  sudo systemctl restart ssh
+
+* Se o shell do usuário estiver como /usr/sbin/nologin, trocar para /bin/bash:
+  sudo usermod -s /bin/bash nome_do_usuario
+
+---
+
+3. Login com chave SSH
+
+Se estiver usando chaves:
+
+* Verificar se a chave pública está em ~/.ssh/authorized_keys.
+* Garantir permissões corretas:
+
+  chmod 700 ~/.ssh  
+  chmod 600 ~/.ssh/authorized_keys
+
+---
+
+4. Diagnóstico com modo verbose
+
+Use -v, -vv ou -vvv para ver onde está falhando:
+
+  ssh -vvv usuario@ip
+
+As últimas linhas geralmente mostram se é problema de autenticação, rede ou permissões.
+
+---
+
+5. Casos específicos
+
+* UserLAnd ou terminais sem ping: instalar manualmente ou usar nmap como alternativa.
+* Redes protegidas (cafeterias, operadoras): muitas vezes bloqueiam acesso entre dispositivos como medida de segurança (isolamento de cliente).
+* Alternativa temporária: usar GitHub para sincronizar scripts ou configurar pastas compartilhadas/clipboard na VM (VirtualBox).
+
+---
+
+6. Erro "Connection timed out"
+
+Causa:
+* O IP remoto não está respondendo na porta 22 (SSH).
+* Serviço SSH pode não estar rodando.
+* A rede está impedindo a conexão (isolamento, NAT mal configurado, firewall externo).
+* Porta redirecionada incorretamente (em NAT ou roteador).
+* Configuração de rede da VM está em modo NAT e não permite conexões diretas do host.
+
+Solução:
+* Verifique se o serviço SSH está rodando:
+  sudo systemctl status ssh
+
+* Teste se a porta está aberta com:
+  nmap -p 22 IP_DA_VM
+
+* Se estiver usando VirtualBox, mude a rede de NAT para Bridge ou Host-Only se quiser acessar diretamente pelo IP da VM.
+* Se estiver usando NAT com redirecionamento de porta, garanta que a porta 22 do host redirecione corretamente para a porta 22 da VM.
+* Verifique se há firewall no host, na VM ou na rede (ex: roteador) bloqueando a conexão.
+
+---
+
+7. Acesso por 127.0.0.1 funciona, mas dá "Permission denied"
+
+Causa provável:
+* A conexão local está ativa, mas você está tentando logar com o usuário errado ou sem senha habilitada.
+* O SSH local pode estar aceitando apenas login por chave pública, e você não a configurou.
+* O usuário pode estar com o shell desabilitado (ex: /usr/sbin/nologin).
+
+Solução:
+* Verifique se está usando o usuário certo:
+  ssh usuario@127.0.0.1
+
+* Habilite o login por senha no sshd_config:
+
+  PasswordAuthentication yes  
+  PermitRootLogin yes  
+  UsePAM yes
+
+* Reinicie o serviço SSH:
+  sudo systemctl restart ssh
+
+* Confirme que o usuário tem shell válido:
+  cat /etc/passwd | grep nome_do_usuario
+
+  Se aparecer /usr/sbin/nologin, mude com:
+  sudo usermod -s /bin/bash nome_do_usuario
+
+---
+
+Use este documento como referência quando encontrar problemas de conexão SSH.

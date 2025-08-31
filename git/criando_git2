@@ -1,0 +1,82 @@
+#!/bin/bash
+
+# =====================================================
+# SCRIPT EXEMPLO: inicializar, configurar remoto e subir
+# =====================================================
+
+# 💡 Use printf em vez de echo para padronizar.
+printf "\n🚀 Inicializando repositório Git...\n"
+
+# 1️⃣ Inicializa o repositório local, se ainda não existir
+if [ -d ".git" ]; then
+  printf "Já existe um repositório Git aqui.\n"
+else
+  git init
+  printf "Repositório Git inicializado.\n"
+fi
+
+# 2️⃣ Cria um .gitignore, se não existir
+if [ ! -f ".gitignore" ]; then
+  printf "# Ignorar arquivos sensíveis e temporários\n" > .gitignore
+  printf ".env\nnode_modules/\n*.log\n__pycache__/\n" >> .gitignore
+  printf ".gitignore criado.\n"
+else
+  printf ".gitignore já existe.\n"
+fi
+
+# 3️⃣ Configura user.name e user.email LOCALMENTE, se não tiver
+LOCAL_USER=$(git config user.name)
+LOCAL_EMAIL=$(git config user.email)
+
+if [ -z "$LOCAL_USER" ] || [ -z "$LOCAL_EMAIL" ]; then
+  printf "Configurar nome de usuário Git: "
+  read -r USER_NAME
+  git config user.name "$USER_NAME"
+
+  printf "Configurar e-mail Git: "
+  read -r USER_EMAIL
+  git config user.email "$USER_EMAIL"
+
+  printf "Configuração local salva.\n"
+else
+  printf "Configuração Git local já definida: %s <%s>\n" "$LOCAL_USER" "$LOCAL_EMAIL"
+fi
+
+# 4️⃣ Adiciona arquivos, exceto os ignorados
+git add .
+printf "Arquivos adicionados ao stage.\n"
+
+# 5️⃣ Faz commit
+printf "Mensagem do commit inicial: "
+read -r COMMIT_MSG
+git commit -m "$COMMIT_MSG"
+printf "Commit criado.\n"
+
+# 6️⃣ Configura remoto USANDO VARIÁVEL DE AMBIENTE
+# ⚠️ IMPORTANTE: Não escreva seu token aqui!
+# Use: export GITHUB_URL="https://<token>@github.com/usuario/repositorio.git"
+if [ -z "$GITHUB_URL" ]; then
+  printf "⚠️  Variável de ambiente GITHUB_URL não definida.\n"
+  printf "Use: export GITHUB_URL=\"https://<token>@github.com/usuario/repositorio.git\"\n"
+  exit 1
+fi
+
+# Verifica se remoto já existe
+REMOTE_URL=$(git remote get-url origin 2>/dev/null)
+
+if [ -z "$REMOTE_URL" ]; then
+  git remote add origin "$GITHUB_URL"
+  printf "Repositório remoto configurado.\n"
+else
+  printf "Remoto já existe: %s\n" "$REMOTE_URL"
+fi
+
+# 7️⃣ Faz push inicial e define upstream (-u)
+BRANCH=$(git branch --show-current)
+if [ -z "$BRANCH" ]; then
+  BRANCH="main"
+fi
+
+git push -u origin "$BRANCH"
+
+printf "\n✅ Código enviado para o repositório remoto com sucesso!\n"

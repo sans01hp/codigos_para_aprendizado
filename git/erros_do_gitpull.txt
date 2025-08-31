@@ -1,0 +1,115 @@
+### 📚 Guia: Configurando o `git pull` para usar Merge
+
+Este documento explica como configurar o `git pull` para **sempre usar merge**, garantindo que seu fluxo de trabalho seja simples e seguro.
+
+---
+
+## ✅ 1️⃣ O que é `git pull` com Merge
+
+* O `git pull` é um comando que faz duas coisas: `fetch` (baixar alterações do repositório remoto) + `merge` (mesclar essas alterações com seus commits locais).
+* Quando há commits diferentes no remoto e no local, o merge cria um **commit de merge** para unir os dois históricos.
+
+**Vantagem:**
+
+* Preserva tudo.
+* Evita sobrescrever histórico remoto sem querer.
+* É o método mais simples e seguro para times.
+
+---
+
+## ✅ 2️⃣ Como definir merge como padrão
+
+No terminal, execute:
+
+```bash
+git config --global pull.rebase false
+```
+
+Isso configura **todos os seus repositórios** para usar merge sempre que fizer `git pull`.
+
+---
+
+## ✅ 3️⃣ Fluxo recomendado
+
+1. **Adicione e commite suas mudanças:**
+
+   ```bash
+   git add .
+   git commit -m "Mensagem do commit"
+   ```
+
+2. **Atualize sua branch local com o remoto:**
+
+   ```bash
+   git pull origin main
+   ```
+
+3. **Envie suas alterações para o remoto:**
+
+   ```bash
+   git push origin main
+   ```
+
+Se não houver conflito, tudo acontece automaticamente.
+
+---
+
+## ✅ 4️⃣ Se houver conflito
+
+1. O Git vai indicar os arquivos em conflito.
+2. Edite cada arquivo e resolva os conflitos.
+3. Marque os arquivos como resolvidos:
+
+   ```bash
+   git add nome_do_arquivo
+   ```
+4. Finalize o merge:
+
+   ```bash
+   git commit
+   ```
+5. Por fim, envie para o remoto:
+
+   ```bash
+   git push origin main
+   ```
+
+---
+
+## ✅ 5️⃣ Script automático (opcional)
+
+Você pode criar um script Bash para automatizar esse fluxo:
+
+```bash
+#!/bin/bash
+
+# Faz pull com merge
+echo "== Fazendo pull com merge =="
+git pull origin main
+
+# Se o pull der certo, faz push
+if [ $? -eq 0 ]; then
+  echo "== Pull bem-sucedido! Dando push =="
+  git push origin main
+else
+  echo "⚠️ Conflito detectado. Resolva antes de dar push!"
+fi
+```
+
+Salve como `git-auto-push.sh` e dê permissão de execução:
+
+```bash
+chmod +x git-auto-push.sh
+```
+
+Execute com:
+
+```bash
+./git-auto-push.sh
+```
+
+---
+
+### ✅ Pronto!
+
+Assim você garante que o `git pull` **sempre faz merge** e evita problemas com históricos divergentes.

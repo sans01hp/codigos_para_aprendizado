@@ -1,0 +1,106 @@
+### 📦 Como instalar e usar o **Git Credential Manager** (GCM) no **Kali Linux**
+
+Este guia explica **passo a passo** como instalar o GCM no Kali Linux, configurar o Git para usar o GCM e armazenar suas credenciais de forma segura.
+
+---
+
+## ✅ 1️⃣ Pré-requisitos
+
+* Você precisa ter o Git já instalado:
+
+  ```bash
+  git --version
+  ```
+
+  Se não tiver:
+
+  ```bash
+  sudo apt update
+  sudo apt install git
+  ```
+
+* Instale o **libsecret** (dependência para guardar as credenciais com segurança):
+
+  ```bash
+  sudo apt-get install libsecret-1-0 libsecret-1-dev
+  ```
+
+---
+
+## ✅ 2️⃣ Baixar o **Git Credential Manager** (GCM)
+
+1. Baixe o instalador oficial do GCM:
+
+   ```bash
+   curl -LO https://aka.ms/gcm/linux-install-source.sh
+   ```
+
+2. Dê permissão de execução ao script:
+
+   ```bash
+   chmod +x linux-install-source.sh
+   ```
+
+3. Rode o script de instalação:
+
+   ```bash
+   ./linux-install-source.sh
+   ```
+
+---
+
+## ✅ 3️⃣ Configurar o Git para usar o GCM
+
+Depois de instalado, configure o Git para usar o GCM como "helper":
+
+```bash
+git config --global credential.helper manager-core
+```
+
+Você pode verificar se foi configurado:
+
+```bash
+git config --global credential.helper
+```
+
+Deve aparecer: `manager-core`
+
+---
+
+## ✅ 4️⃣ Usar na prática
+
+Quando você fizer um `git push` ou `git pull` para um repositório que exija autenticação:
+
+1. O Git pedirá seu **usuário GitHub** e o **token de acesso pessoal**.
+2. Digite normalmente — o **GCM salvará as credenciais** no seu armazenamento seguro (via `libsecret` ou GNOME Keyring).
+3. Na próxima vez, o Git usará as credenciais automaticamente, **sem pedir novamente**.
+
+---
+
+## ✅ 5️⃣ Se precisar atualizar ou remover credenciais
+
+* Para apagar as credenciais salvas:
+
+  ```bash
+  git credential-manager erase
+  ```
+
+* Para verificar o helper ativo:
+
+  ```bash
+  git config --global credential.helper
+  ```
+
+Se quiser parar de usar o GCM, basta mudar:
+
+```bash
+git config --global --unset credential.helper
+```
+
+---
+
+## 📌 Dica final
+
+Usar o GCM é **mais seguro** do que salvar tokens em arquivos ou URLs. Assim você não versiona seu token por acidente. 🔐✨
+
+**Pronto!** Agora você tem o **GCM** no Kali Linux, suas credenciais salvas de forma segura e seu Git configurado. 🚀

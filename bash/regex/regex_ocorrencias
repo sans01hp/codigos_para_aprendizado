@@ -1,0 +1,65 @@
+#!/bin/bash
+cat << 'EOF' > regex_basico_bash.txt
+===========================================
+      REGEX BÁSICO NO BASH: [ ] e ( ) 
+===========================================
+
+1. Conjuntos de caracteres: [ ]
+
+- Definem um conjunto de caracteres possíveis para casar.
+- O regex casa com UM caractere que esteja dentro dos colchetes.
+- Exemplo:
+    [abc]   → casa com 'a' ou 'b' ou 'c'
+    [0-9]   → casa com qualquer dígito de 0 a 9
+    [a-zA-Z]→ casa com qualquer letra minúscula ou maiúscula
+
+- Quantificadores podem ser usados após o conjunto:
+    [a-z]+  → uma ou mais letras minúsculas
+    [0-9]*  → zero ou mais dígitos
+
+2. Agrupamento: ( )
+
+- Agrupa uma sequência de caracteres para tratá-la como uma unidade.
+- Isso permite aplicar quantificadores a todo o grupo.
+- Exemplo:
+    (abc)+ → uma ou mais repetições da sequência "abc"
+    (xyz)? → zero ou uma ocorrência da sequência "xyz"
+
+- OBS:
+    - NÃO se escapa os parênteses quando usados para agrupar.
+    - Escapa-se somente quando quiser casar o caractere literal '(' ou ')', usando \( e \).
+
+3. Quantificadores principais:
+
+| Símbolo | Significado            | Exemplo               | Casos que casa             |
+|---------|-----------------------|-----------------------|---------------------------|
+| ?       | zero ou uma ocorrência | a?                    | "", "a"                   |
+| *       | zero ou mais           | a*                    | "", "a", "aa", "aaa", ... |
+| +       | uma ou mais            | a+                    | "a", "aa", "aaa", ...     |
+
+4. Exemplos práticos:
+
+- Regex: ^https://[a-zA-Z]+[0-9]*\.com$
+  
+  Explicação:
+  - ^https://       → começa com "https://"
+  - [a-zA-Z]+       → uma ou mais letras (nome do site)
+  - [0-9]*          → zero ou mais dígitos (opcional)
+  - \.com           → termina com ".com" (ponto escapado)
+  - $               → fim da string
+
+- Regex: ^(https://)?example\.com$
+  
+  Explicação:
+  - (https://)?     → "https://" opcional
+  - example\.com    → "example.com"
+  - $               → fim da string
+
+5. Quando usar escape:
+
+- Ponto (.) deve ser escapado para casar com um ponto literal: \.
+- Parênteses literais devem ser escapados: \( e \)
+- Colchetes normalmente não precisam de escape quando usados para conjuntos.
+
+===========================================
+EOF

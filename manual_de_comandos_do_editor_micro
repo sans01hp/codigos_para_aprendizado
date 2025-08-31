@@ -1,0 +1,94 @@
+cat << 'EOF'
+╔══════════════════════════════════════════════════════════════╗
+║                       GUIA DO EDITOR MICRO                   ║
+║                      Atalhos, comandos e uso                ║
+╚══════════════════════════════════════════════════════════════╝
+
+📌 SOBRE O MICRO:
+Micro é um editor de terminal moderno, leve e fácil de usar, pensado para quem vem do nano, mas com funções avançadas semelhantes ao Sublime/VSCode.
+
+──────────────────────────────────────────────────────────────
+📦 INSTALAÇÃO NO LINUX:
+  sudo apt install micro
+
+──────────────────────────────────────────────────────────────
+🧠 FUNCIONAMENTO BÁSICO:
+
+- Editar texto: Basta digitar normalmente (modo de inserção por padrão)
+- Executar comandos: Pressione **Ctrl + E** para abrir o prompt de comandos
+- Para sair do prompt, pressione **Esc**
+
+──────────────────────────────────────────────────────────────
+⌨️ ATALHOS ÚTEIS NO MICRO:
+
+📂 Arquivo:
+  Ctrl + O      → Abrir arquivo
+  Ctrl + S      → Salvar arquivo
+  Ctrl + Q      → Sair do micro (com confirmação)
+  Ctrl + E      → Abrir prompt de comandos (modo comando)
+
+🖱️ Edição:
+  Ctrl + C      → Copiar
+  Ctrl + X      → Recortar
+  Ctrl + V      → Colar
+  Ctrl + A      → Selecionar tudo
+  Ctrl + Z      → Desfazer
+  Ctrl + Y      → Refazer
+
+📑 Navegação:
+  Ctrl + ← / →  → Mover palavra por palavra
+  Ctrl + ↑ / ↓  → Rolar tela sem mover cursor
+  Ctrl + G      → Ir para linha específica
+
+🔍 Busca:
+  Ctrl + F      → Buscar palavra
+  Ctrl + N      → Próxima ocorrência
+  Ctrl + P      → Ocorrência anterior
+
+──────────────────────────────────────────────────────────────
+💻 COMANDOS NO PROMPT (Ctrl + E):
+
+  save                  → Salvar arquivo atual
+  quit                  → Sair
+  save; quit            → Salvar e sair
+  open nome.txt         → Abrir arquivo
+  help                  → Ver comandos disponíveis
+  theme                 → Alterar tema (ex: theme solarized-dark)
+  indentconfig          → Configurar indentação
+  set option value      → Exemplo: set tabsize 4
+
+──────────────────────────────────────────────────────────────
+🧪 DICAS:
+
+✅ Copiar uma linha inteira:
+  - Posicione o cursor na linha
+  - Ctrl + C
+
+✅ Modo de Seleção:
+  - Shift + teclas de direção
+  - Copiar/recortar após selecionar: Ctrl + C / Ctrl + X
+
+✅ Cancelar uma seleção ou comando:
+  - Pressione **Esc**
+
+✅ Atalhos não abrem o prompt de comando.
+  - Sempre use **Ctrl + E** para rodar comandos como "save", "quit", etc.
+
+──────────────────────────────────────────────────────────────
+📁 CONFIGURAÇÃO PERSONALIZADA:
+
+Você pode configurar o micro com um arquivo:
+~/.config/micro/settings.json
+
+Exemplo:
+{
+  "tabsize": 4,
+  "autosu": true,
+  "syntax": "on",
+  "clipboard": "external"
+}
+
+──────────────────────────────────────────────────────────────
+🌐 MAIS:
+Site oficial: https://micro-editor.github.io/
+EOF

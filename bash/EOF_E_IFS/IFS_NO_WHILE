@@ -1,0 +1,98 @@
+#!/bin/bash
+
+cat << 'EXPLICACAO'
+
+────────────────────────────────────────────────────
+📘 EXPLICAÇÃO: IFS, READ e WHILE EM BASH
+────────────────────────────────────────────────────
+
+🔹 1. O que é IFS?
+--------------------
+IFS significa "Internal Field Separator" (Separador Interno de Campos).
+
+Por padrão, o IFS é usado pelo shell para **dividir strings em palavras** com base em espaços, quebras de linha ou tabulações.
+
+Exemplo:
+----------
+linha="usuario senha outro"
+
+IFS=" " read user pass outro <<< "$linha"
+
+# Resultado:
+# user="usuario"
+# pass="senha"
+# outro="outro"
+
+Se não quiser que o espaço divida a string, você pode alterar ou limpar o IFS:
+IFS='' (ou unset IFS)
+
+🔹 2. Comando READ
+--------------------
+O comando `read` serve para ler uma linha da entrada padrão e armazenar o valor em uma variável.
+
+Forma básica:
+--------------
+read variavel
+
+Também pode ler múltiplas variáveis:
+read var1 var2 var3
+
+A linha será dividida com base no valor atual de IFS.
+
+🔹 3. O que faz o -r?
+--------------------
+A opção `-r` no `read` impede que a barra invertida `\` seja interpretada como caractere de escape.
+
+Exemplo sem -r:
+----------------
+linha="isso é uma linha com \\ e continua"
+read texto <<< "$linha"
+# A barra invertida pode ser removida ou interpretada.
+
+Exemplo com -r:
+----------------
+read -r texto <<< "$linha"
+# A string será lida literalmente com as barras preservadas.
+
+🔹 4. Leitura de arquivo linha a linha com while e read
+--------------------------------------------------------
+Forma mais segura e comum para ler arquivos:
+
+while IFS= read -r linha; do
+    echo "Linha lida: $linha"
+done < arquivo.txt
+
+Explicação:
+-------------
+- `IFS=`: limpa o separador para não quebrar a linha em palavras.
+- `-r` : evita que `read` interprete `\` como escape.
+- `done < arquivo.txt`: redireciona o conteúdo do arquivo para o loop.
+
+⚠️ Sem IFS= e -r, você pode ter problemas com:
+  - espaços sendo removidos ou dividindo variáveis
+  - barras invertidas desaparecendo
+
+🔹 5. Exemplo completo prático:
+-------------------------------
+cat << EOF > nomes.txt
+Ana Paula
+João\ da\ Silva
+Carlos
+EOF
+
+while IFS= read -r nome; do
+    echo "Nome: $nome"
+done < nomes.txt
+
+# Saída:
+# Nome: Ana Paula
+# Nome: João\ da\ Silva
+# Nome: Carlos
+
+# Note que a barra invertida será mantida com -r.
+
+────────────────────────────────────────────────────
+FIM DA EXPLICAÇÃO
+────────────────────────────────────────────────────
+
+EXPLICACAO

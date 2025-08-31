@@ -1,0 +1,111 @@
+============================================================
+📘 GUIA RÁPIDO: BOAS PRÁTICAS COM IF NO BASH/ZSH
+============================================================
+
+✅ 1. SEMPRE USE [[ ... ]] PARA TESTES
+É mais moderno e seguro que [ ... ], além de suportar regex e globs.
+
+Exemplo:
+    if [[ "$var" == "admin" ]]; then
+        echo "Bem-vindo, admin"
+    fi
+
+------------------------------------------------------------
+
+✅ 2. USE -z E -n PARA VERIFICAR STRINGS
+    - -z "$var" → string vazia
+    - -n "$var" → string não vazia
+
+Exemplo:
+    if [[ -z "$entrada" ]]; then
+        echo "Nada foi digitado"
+    fi
+
+------------------------------------------------------------
+
+✅ 3. USE IF MESMO PARA UM ÚNICO COMANDO
+Ajuda na leitura e expansão futura do código.
+
+    if [[ "$status" == "falha" ]]; then
+        continue
+    fi
+
+------------------------------------------------------------
+
+✅ 4. EVITE ENCURTAMENTOS EXCESSIVOS COM && E ||
+
+Útil apenas em casos simples:
+    [[ "$DEBUG" == "on" ]] && echo "Debug ativo"
+
+Mas prefira:
+    if [[ "$DEBUG" == "on" ]]; then
+        echo "Debug ativo"
+    fi
+
+------------------------------------------------------------
+
+✅ 5. AGRUPE CONDIÇÕES COM CLAREZA
+    - && para "E"
+    - || para "OU"
+
+Exemplo:
+    if [[ -n "$user" && "$user" != "root" ]]; then
+        echo "Usuário válido"
+    fi
+
+------------------------------------------------------------
+
+✅ 6. ATENÇÃO AOS ESPAÇOS
+Erro comum é esquecer os espaços dentro do if.
+
+ERRADO:
+    if[["$var"=="x"]]; then
+
+CERTO:
+    if [[ "$var" == "x" ]]; then
+
+------------------------------------------------------------
+
+✅ 7. USE elif E else COM IDENTAÇÃO CLARA
+
+    if [[ "$opcao" == "1" ]]; then
+        echo "Opção 1"
+    elif [[ "$opcao" == "2" ]]; then
+        echo "Opção 2"
+    else
+        echo "Opção inválida"
+    fi
+
+------------------------------------------------------------
+
+✅ 8. COMENTE IFs QUANDO A LÓGICA NÃO FOR ÓBVIA
+
+    if [[ "$linha" =~ ^# ]]; then
+        # Ignora comentários no arquivo
+        continue
+    fi
+
+------------------------------------------------------------
+
+✅ 9. USE : COMO PLACEHOLDER PARA BLOCOS VAZIOS
+
+    if [[ "$DEBUG" == "on" ]]; then
+        : # Sem ação por enquanto
+    fi
+
+------------------------------------------------------------
+
+✅ 10. COMPARAÇÕES NUMÉRICAS DEVEM USAR (( ))
+
+    if (( idade >= 18 )); then
+        echo "Maior de idade"
+    fi
+
+------------------------------------------------------------
+
+🧠 DICA EXTRA:
+Você pode usar `source` para carregar funções utilitárias em seus scripts, ou criar arquivos .sh com funções que são reaproveitadas!
+
+============================================================
+FIM DO GUIA - salve como "guia_if_bash.txt"
+============================================================

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+source cores_ANSI
+
+printf "${YELLOW}Importação bem sucedida${RESET}\n"
+
+while IFS= read -r cor; do
+	if [[ "$cor" =~ ^# ]]; then
+		continue
+	else	
+   		printf "${cor}texto_colorido\n"
+	fi
+done < cores_ANSI

@@ -1,0 +1,111 @@
+#!/bin/bash
+
+# ==============================================
+# Script para inicializar e subir projeto no Git
+# Usando printf e read -r para consistência
+# ==============================================
+
+printf "\n===========================\n"
+printf "Verificando repositório Git\n"
+printf "===========================\n\n"
+
+# 1️⃣ Verifica se já é um repositório
+if [ -d ".git" ]; then
+  printf "⚠️  Já existe um repositório Git aqui!\n"
+  printf "Criar outro repositório dentro deste pode dar conflito.\n"
+  printf "Pressione Enter para continuar ou Ctrl+C para sair.\n"
+  read -r
+else
+  printf "Nenhum repositório Git encontrado. Inicializando...\n"
+  git init
+  printf "Repositório Git inicializado.\n"
+fi
+
+printf "\n============================\n"
+printf "Passo 2: Criar .gitignore\n"
+printf "============================\n\n"
+
+# 2️⃣ Cria o .gitignore se não existir
+if [ -f ".gitignore" ]; then
+  printf "Arquivo .gitignore já existe.\n"
+else
+  printf "# Ignorar arquivos e pastas\n" > .gitignore
+  printf ".env\n" >> .gitignore
+  printf "node_modules/\n" >> .gitignore
+  printf "*.log\n" >> .gitignore
+  printf "__pycache__/\n" >> .gitignore
+  printf ".gitignore criado com regras básicas.\n"
+fi
+
+printf "\n======================================\n"
+printf "Passo 3: Configurar usuário Git local\n"
+printf "======================================\n\n"
+
+# 3️⃣ Configura user.name e user.email local, se necessário
+LOCAL_USER=$(git config user.name)
+LOCAL_EMAIL=$(git config user.email)
+
+if [ -z "$LOCAL_USER" ] || [ -z "$LOCAL_EMAIL" ]; then
+  printf "Usuário ou e-mail Git local não configurado.\n"
+  printf "Vamos configurar agora:\n"
+
+  printf "Digite seu nome de usuário Git: "
+  read -r USER_NAME
+  git config user.name "$USER_NAME"
+
+  printf "Digite seu e-mail Git: "
+  read -r USER_EMAIL
+  git config user.email "$USER_EMAIL"
+
+  printf "Usuário Git local configurado como: %s <%s>\n" "$USER_NAME" "$USER_EMAIL"
+else
+  printf "Usuário Git local já configurado como: %s <%s>\n" "$LOCAL_USER" "$LOCAL_EMAIL"
+fi
+# comentario
+printf "\n============================\n"
+printf "Passo 4: Adicionar arquivos\n"
+printf "============================\n\n"
+
+# 4️⃣ Adiciona tudo (menos o que estiver no .gitignore)
+git add .
+printf "Arquivos adicionados.\n"
+
+printf "\n=============================\n"
+printf "Passo 5: Criar commit inicial\n"
+printf "=============================\n\n"
+
+printf "Digite a mensagem do commit inicial: "
+read -r COMMIT_MSG
+git commit -m "$COMMIT_MSG"
+printf "Commit criado.\n"
+
+printf "\n========================================\n"
+printf "Passo 6: Configurar repositório remoto\n"
+printf "========================================\n\n"
+
+# 5️⃣ Configura o repositório remoto se necessário
+REMOTE_URL=$(git remote get-url origin 2>/dev/null)
+
+if [ -z "$REMOTE_URL" ]; then
+  printf "Digite a URL do repositório remoto (ex: https://github.com/usuario/repositorio.git): "
+  read -r URL
+  git remote add origin "$URL"
+  printf "Repositório remoto configurado.\n"
+else
+  printf "Repositório remoto já configurado como: %s\n" "$REMOTE_URL"
+fi
+
+printf "\n==============================\n"
+printf "Passo 7: Enviar para o remoto\n"
+printf "==============================\n\n"
+
+# 6️⃣ Pega a branch atual ou usa main por padrão
+BRANCH=$(git branch --show-current)
+if [ -z "$BRANCH" ]; then
+  BRANCH="main"
+  printf "Nenhuma branch detectada. Usando '%s'.\n" "$BRANCH"
+fi
+
+git push -u origin "$BRANCH"
+
+printf "\n✅  Projeto enviado para o GitHub com sucesso!\n"

@@ -1,0 +1,155 @@
+#!/bin/bash
+
+cat << 'EOF'
+
+────────────────────────────────────────────────────
+📘 GUIA COMPLETO: USANDO GIT COM GITHUB DE FORMA SEGURA
+────────────────────────────────────────────────────
+
+🔹 1. INICIALIZANDO UM REPOSITÓRIO GIT
+----------------------------------------
+Para iniciar um repositório local Git em um diretório:
+
+    git init
+
+Isso cria a pasta oculta `.git/` com todos os dados de versionamento.
+
+────────────────────────────────────────────────────
+
+🔹 2. CONFIGURAÇÕES INICIAIS
+-----------------------------
+Configure seu nome e e-mail (usado nos commits):
+
+    git config --global user.name "Seu Nome"
+    git config --global user.email "seu@email.com"
+
+Você pode também definir essas configs apenas para o projeto atual, sem usar `--global`.
+
+────────────────────────────────────────────────────
+
+🔹 3. VERIFICANDO CONFIGURAÇÕES
+-------------------------------
+Para verificar se tudo foi configurado corretamente:
+
+    git config --list
+
+────────────────────────────────────────────────────
+
+🔹 4. NAVEGAÇÃO BÁSICA NO GIT
+------------------------------
+Verificar o status atual do repositório:
+
+    git status
+
+Verificar histórico de commits:
+
+    git log
+
+Listar branches:
+
+    git branch
+
+Criar e mudar para uma nova branch:
+
+    git checkout -b minha-nova-branch
+
+────────────────────────────────────────────────────
+
+🔹 5. ADICIONANDO ARQUIVOS E FAZENDO COMMIT
+-------------------------------------------
+Adicionar arquivos ao staging:
+
+    git add arquivo.txt            # Um arquivo
+    git add .                      # Todos os arquivos modificados
+
+Fazer commit com mensagem:
+
+    git commit -m "Mensagem explicando a alteração"
+
+────────────────────────────────────────────────────
+
+🔹 6. CONECTANDO AO GITHUB
+---------------------------
+Primeiro, crie um repositório no GitHub (sem README se já tiver localmente).
+
+Depois, conecte seu repositório local ao remoto:
+
+    git remote add origin https://github.com/usuario/repositorio.git
+
+Se já existir, use:
+
+    git remote set-url origin https://github.com/usuario/repositorio.git
+
+────────────────────────────────────────────────────
+
+🔹 7. FAZENDO PUSH PARA O GITHUB
+---------------------------------
+Enviar sua branch para o GitHub:
+
+    git push -u origin main
+
+(Use `master` se for esse o nome da branch padrão)
+
+────────────────────────────────────────────────────
+
+🔹 8. LOGIN SEGURO: TOKEN EM VEZ DE SENHA
+-----------------------------------------
+O GitHub **não permite mais senhas** diretamente no push. Use **Personal Access Token (PAT)**.
+
+📌 Como criar um token:
+  1. Vá em: https://github.com/settings/tokens
+  2. Clique em: "Generate new token"
+  3. Dê permissões como `repo`
+  4. Copie e salve o token (não será mostrado de novo)
+
+🛡️ Como usar com segurança:
+  ✅ Evite digitar o token sempre: configure um helper:
+
+    git config --global credential.helper store
+
+  Isso salva temporariamente o login em texto plano (⚠️ cuidado em máquinas públicas).
+
+🔒 Mais seguro:
+  Use o **Git Credential Manager**:
+
+    sudo apt install git-credential-manager-core
+    git-credential-manager-core configure
+
+────────────────────────────────────────────────────
+
+🔹 9. .GITIGNORE – IGNORAR ARQUIVOS
+------------------------------------
+Crie um arquivo `.gitignore` para excluir arquivos/pastas do Git.
+
+Exemplo:
+
+    *.log
+    node_modules/
+    secrets.env
+
+────────────────────────────────────────────────────
+
+🔹 10. COMANDOS ÚTEIS
+----------------------
+Visualizar as remotas:
+
+    git remote -v
+
+Ver alterações com comparação:
+
+    git diff
+
+Desfazer alterações no arquivo:
+
+    git checkout -- arquivo.txt
+
+Clonar um repositório existente:
+
+    git clone https://github.com/usuario/repositorio.git
+
+────────────────────────────────────────────────────
+
+✅ PRONTO!
+Você agora tem o básico (e mais!) para criar, versionar e enviar projetos com Git + GitHub de forma segura e controlada.
+
+EOF

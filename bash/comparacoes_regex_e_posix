@@ -1,0 +1,110 @@
+#!/bin/bash
+cat <<EOF
+Resumo Explicativo: Comparações em Bash
+
+===========================================
+1. COMPARAÇÕES NUMÉRICAS
+===========================================
+
+-> Com [ ]:
+- Sintaxe POSIX tradicional, precisa usar operadores específicos.
+- Exemplo: [ "$a" -lt "$b" ]
+- Operadores:
+  -eq : igual
+  -ne : diferente
+  -lt : menor que
+  -le : menor ou igual
+  -gt : maior que
+  -ge : maior ou igual
+- Necessário colocar os números entre aspas para evitar erros.
+
+-> Com (( )):
+- Forma moderna e mais prática para números.
+- Não precisa usar aspas nem prefixar variáveis com $.
+- Suporta operações matemáticas e lógica booleana.
+- Exemplo: (( a > b )), (( a + 2 == 7 )), ((x > 0 && y < 10))
+
+-> Com let:
+- Alternativa ao (( )), usada para operações simples.
+- Exemplo: let "a = b + 2"
+
+-> Com expr:
+- Método mais antigo.
+- Precisa de espaços entre os operadores.
+- Para multiplicar, é necessário escapar o asterisco: \*
+- Exemplo: expr 5 + 2, expr $a \* 2
+
+===========================================
+2. COMPARAÇÕES DE STRINGS
+===========================================
+
+-> Com [ ]:
+- Suporta igualdade e diferença.
+- Exemplo: [ "$str1" = "$str2" ]
+- Operadores:
+  =   : igual
+  !=  : diferente
+  -z  : string vazia
+  -n  : string não vazia
+
+-> Com [[ ]]:
+- Mais seguro e robusto para strings.
+- Permite usar **curingas (wildcards)** e **expressões regulares**.
+- Exemplo:
+  [[ "$texto" == h* ]]        → verifica se começa com 'h'
+  [[ "$texto" =~ ^[a-z]+$ ]]  → regex para apenas letras minúsculas
+
+- Também aceita operadores -z e -n.
+- Pode combinar condições com && e ||.
+
+===========================================
+3. COMPARAÇÕES DE ARQUIVOS
+===========================================
+
+-> Usadas com [ ], muito úteis em scripts.
+
+- [ -e arquivo ] → Verifica se o arquivo existe
+- [ -f arquivo ] → Verifica se é um arquivo regular
+- [ -d arquivo ] → Verifica se é um diretório
+- [ -s arquivo ] → Verifica se não está vazio
+- [ -r arquivo ] → Verifica permissão de leitura
+- [ -w arquivo ] → Verifica permissão de escrita
+- [ -x arquivo ] → Verifica se é executável
+
+Exemplo:
+  if [ -f "$arquivo" ]; then
+     echo "É um arquivo regular"
+  fi
+
+===========================================
+4. COMPARAÇÕES COMPOSTAS (LÓGICA BOOLEANA)
+===========================================
+
+-> Com [ ]:
+- Usa os operadores:
+  -a  : AND
+  -o  : OR
+
+Exemplo:
+  [ "$a" -lt "$b" -a "$b" -gt 8 ]
+
+-> Com [[ ]]:
+- Mais intuitivo, permite uso de && e || como em C/C++.
+
+Exemplo:
+  [[ "$a" -lt "$b" && "$b" -gt 8 ]]
+
+===========================================
+5. OUTROS DETALHES IMPORTANTES
+===========================================
+
+- (( )) permite fazer incrementos diretamente:
+  (( a += 1 )), (( b = b + 2 ))
+
+- [[ ]] é preferível para strings com espaços ou curingas, pois evita parsing incorreto.
+
+- [ ] é mais portátil (compatível com qualquer shell POSIX), mas tem mais limitações.
+
+- [[ ]] e (( )) são específicos do Bash, mas oferecem mais flexibilidade e segurança.
+
+EOF

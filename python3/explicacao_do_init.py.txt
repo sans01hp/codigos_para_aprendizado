@@ -1,0 +1,38 @@
+# Estrutura de pacotes com __init__.py em Python
+
+Em Python, uma pasta contendo um arquivo chamado __init__.py é considerada um **pacote**.
+Isso permite que você importe módulos (arquivos .py) ou subpacotes dessa pasta como se fossem bibliotecas.
+
+---
+
+## 1. Criando uma estrutura local de bibliotecas
+
+Exemplo de organização:
+
+meu_script.py  
+livrarias/  
+├── __init__.py  
+├── colorama/  
+│   ├── __init__.py  
+│   ├── core.py  
+│   └── ...  
+├── outra_lib/  
+│   ├── __init__.py  
+│   └── ...  
+
+---
+
+## 2. Por que usar __init__.py?
+
+- Indica ao Python que aquela pasta é um **pacote**
+- Pode conter código de inicialização do pacote (opcional)
+- Sem esse arquivo, o Python **não permite importar** a pasta como biblioteca
+
+---
+
+## 3. Importando pacotes locais no script
+
+Se `meu_script.py` estiver no mesmo nível da pasta `livrarias`, você pode fazer:
+
+```python
+from livrarias.colorama import Fore, Style

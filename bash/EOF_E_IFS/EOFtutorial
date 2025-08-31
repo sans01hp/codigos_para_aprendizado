@@ -1,0 +1,106 @@
+#!/bin/bash
+
+cat << EOF
+
+===============================
+TUTORIAL: Uso de EOF, case e regex
+===============================
+
+1) Uso do EOF (Here Document):
+
+- O comando 'cat << EOF' seguido de um texto e 'EOF' na linha separada imprime literalmente tudo o que está entre eles.
+- Exemplo:
+
+  cat << EXEMPLO
+  Linha 1
+  Linha 2 com \$variavel (não interpretado)
+  EXEMPLO
+
+- As variáveis NÃO são expandidas aqui, pois o texto é tratado literalmente.
+- Se quiser expandir variáveis e caracteres especiais, use EOF sem aspas, assim:
+
+  VAR="valor"
+  cat << EOF
+  A variável VAR tem valor: \$VAR
+  EOF
+
+  Isso imprimirá:
+  A variável VAR tem valor: valor
+
+- Se usar aspas ao redor do marcador, tipo "EOF", o conteúdo será tratado literalmente, sem expansão. Exemplo:
+
+  VAR="valor"
+  cat << "EOF"
+  A variável VAR tem valor: \$VAR
+  EOF
+
+  Isso imprimirá exatamente:
+  A variável VAR tem valor: \$VAR
+
+- Portanto, sem aspas: variáveis e comandos são expandidos. Com aspas: texto é literal.
+
+2) Agrupando comandos com { }:
+
+- As chaves { } agrupam comandos para redirecionar a saída deles juntos, por exemplo:
+
+  {
+    echo "Linha 1"
+    echo "Linha 2"
+  } > arquivo.txt
+
+- Tudo dentro das chaves é executado e sua saída vai para o arquivo.
+
+3) Case statement (com glob patterns):
+
+- O 'case' permite comparar uma variável contra padrões simples (globs), não regex.
+- Sintaxe básica:
+
+  case \$var in
+    padrao1)
+      comandos ;;
+    padrao2)
+      comandos ;;
+    *)
+      comandos ;;
+  esac
+
+- Exemplos de padrões:
+  - https://*     # qualquer coisa que comece com 'https://'
+  - *.com        # termina com '.com'
+  - [a-z]*       # começa com uma letra minúscula
+
+4) Usando regex dentro do bloco case:
+
+- O 'case' não suporta regex na parte de padrões, mas DENTRO do bloco de comandos você pode usar 'if [[ "\$var" =~ regex ]]' normalmente.
+- Isso permite filtrar grosso modo no case e detalhar dentro.
+
+Exemplo prático:
+
+case "\$url" in
+  https://*)
+    if [[ "\$url" =~ \\.com\$ ]]; then
+      echo "URL começa com https e termina com .com"
+    else
+      echo "URL começa com https mas não termina com .com"
+      exit 1
+    fi
+    ;;
+  *)
+    echo "URL não começa com https"
+    exit 1
+    ;;
+esac
+
+5) Resumo
+
+- EOF é usado para imprimir blocos de texto facilmente.
+- As aspas em "EOF" fazem o conteúdo ser literal, sem expansão.
+- { } agrupa comandos para redirecionar a saída.
+- case usa padrões simples, não regex.
+- Use regex dentro dos blocos case para validações detalhadas.
+
+===============================
+Fim do tutorial
+===============================
+
+EOF
