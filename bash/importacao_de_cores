@@ -8,6 +8,6 @@ while IFS= read -r cor; do
 	if [[ "$cor" =~ ^# ]]; then
 		continue
 	else	
-   		printf "${cor}texto_colorido\n"
+   		printf "%btexto_colorido%b\n" "${!cor}" "${RESET}"
 	fi
 done < cores_ANSI

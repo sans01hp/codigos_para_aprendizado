@@ -1,0 +1,10 @@
+# Cabeçalho
+printf "%-20s %10s\n" "Produto" "Preço"
+
+# Produtos
+produtos=("Maçã" "Banana" "Manga")
+precos=(2.5 12.75 1.2)
+
+for i in "${!produtos[@]}"; do
+    printf "%-20s %10.2f\n" "${produtos[i]}" "${precos[i]}"
+done

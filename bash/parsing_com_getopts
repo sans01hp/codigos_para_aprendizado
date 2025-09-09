@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+# ---------- Função de ajuda ----------
+mostrar_uso() {
+    echo "Uso: $0 -u <url> -o <arquivo_saida>"
+    echo "  -u  Alvo (domínio ou URL)"
+    echo "  -o  Arquivo de saída (opcional)"
+    exit 0
+}
+
+# ---------- Valores padrão ----------
+url=""
+saida="saida.txt"  # default caso não passe -o
+
+# ---------- Parsing com getopts ----------
+while getopts "u:o:h" opt; do
+    case $opt in
+        u) url="$OPTARG" ;;
+        o) saida="$OPTARG" ;;
+        h) mostrar_uso ;;
+        *) mostrar_uso ;;
+    esac
+done
+
+# ---------- Validação ----------
+if [[ -z "$url" ]]; then
+    echo "[ERRO] Você precisa passar uma URL com -u"
+    mostrar_uso
+fi
+
+# Adiciona https:// se não estiver presente
+if [[ "$url" != https://* ]]; then
+    url="https://$url"
+fi
+
+# ---------- Saída para conferência ----------
+echo "Alvo definido: $url"
+echo "Arquivo de saída: $saida"
