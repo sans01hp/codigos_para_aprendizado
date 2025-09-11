@@ -1,0 +1,46 @@
+📌 Guia rápido — %s, %b, $var, ${var} no Bash
+
+------------------------------------------------------------
+🔹 printf com variáveis
+- %s → imprime string literal (seguro para variáveis de usuário).
+  Exemplo: printf "URL: %s\n" "$url"
+
+- %b → interpreta escapes (cores ANSI, \n, \t, etc).
+  Exemplo: printf "%bHello%b\n" "$GREEN" "$RESET"
+
+- Mistura %b e %s → ideal para prints coloridos com variáveis.
+  Exemplo: printf "%b[ERRO]%b URL inválida: %s\n" "$RED" "$RESET" "$url"
+
+------------------------------------------------------------
+🔹 Interpolação em comandos
+- $var → simples, funciona bem quando a variável está isolada.
+  Exemplo: echo "$url"
+
+- ${var} → mais seguro, principalmente quando concatenar com texto fixo ou paths.
+  Exemplo: echo "${url}_result.txt"
+           cat "${HOME}/scripts/${file}"
+
+------------------------------------------------------------
+🔹 Quando usar cada um
+- %s  → para variáveis em printf
+- %b  → para cores/escapes em printf
+- $var  → quando a variável estiver sozinha em um comando
+- ${var} → quando precisar colar com outro texto ou dentro de paths
+
+------------------------------------------------------------
+📊 Tabelinha de bolso
+
+Caso de uso                     | Exemplo                                         | Explicação
+--------------------------------|-------------------------------------------------|------------------------------------------
+Texto simples em printf         | printf "URL: %s\n" "$url"                      | %s insere string sem interpretar nada.
+ANSI / escapes em printf        | printf "%bHello%b\n" "$GREEN" "$RESET"         | %b interpreta \033 e outros escapes.
+Variável isolada                | echo "$url"                                    | $var expande direto.
+Concatenar com texto fixo       | echo "${url}_result.txt"                        | ${var} garante que o shell saiba onde a var termina.
+Path com variáveis              | cat "${HOME}/scripts/${file}"                   | Evita confusão entre variáveis e texto literal.
+Print misto (cores + variável)  | printf "%b%s%b\n" "$RED" "$erro" "$RESET"      | %b para cor, %s para variável.
+
+------------------------------------------------------------
+📌 Resumo mental
+- Prints        → %s (variável) + %b (cores/escapes)
+- Comandos/paths→ ${var}
+- Variável só   → $var
