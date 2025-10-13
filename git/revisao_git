@@ -147,7 +147,11 @@ Clonar um repositório existente:
 
     git clone https://github.com/usuario/repositorio.git
 
+Verificar todos os arquivos sendo ignorados pelo .gitignore
+    git ls-files --others --ignored --exclude-standard
+
 ────────────────────────────────────────────────────
+
 
 ✅ PRONTO!
 Você agora tem o básico (e mais!) para criar, versionar e enviar projetos com Git + GitHub de forma segura e controlada.
