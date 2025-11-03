@@ -1,0 +1,26 @@
+# 1️⃣ Inserir imagem do Guest Additions
+# No VirtualBox: Dispositivos → Inserir imagem de CD dos Guest Additions
+# Na VM, o CD aparecerá em /media/$USER/VBox_GAs_<versão>/ ou no desktop
+
+# 2️⃣ Instalar via terminal
+cd /media/$USER/VBox_GAs_*/
+sudo sh VBoxLinuxAdditions.run
+
+# 3️⃣ Reiniciar a VM
+# Reinicie a máquina virtual para carregar todos os módulos
+
+# 4️⃣ Adicionar usuário ao grupo vboxsf (para acessar pastas compartilhadas sem sudo)
+sudo usermod -aG vboxsf $USER
+# Faça logout/login ou reinicie a VM novamente
+
+# 5️⃣ Verificar pasta compartilhada
+# Pasta montada automaticamente (se Automount ativado no VirtualBox):
+ls /media/sf_<nome_da_pasta>
+
+# Montagem manual (caso não apareça):
+sudo mount -t vboxsf <nome_da_pasta> /media/sf_<nome_da_pasta>
+
+# 💡 Dicas:
+# - Evite espaços ou acentos nos nomes das pastas compartilhadas
+# - Você pode criar várias pastas compartilhadas sem reinstalar o Guest Additions
+# - Depois da instalação, pasta compartilhada, mouse integrado e resolução da tela funcionam normalmente
