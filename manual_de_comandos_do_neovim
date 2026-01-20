@@ -1,0 +1,126 @@
+#!/bin/bash
+# neovim-manual.sh - Manual Neovim (Execute: bash neovim-manual.sh OU cat neovim-manual.sh)
+# Criado: 20/Jan/2026 | Linux User
+
+echo "🧠 NEOVIM MANUAL RÁPIDO (2026) - LSP NATIVE"
+echo "═══════════════════════════════════════════"
+echo ""
+
+# MODOS
+cat << 'EOF'
+🔄 MODOS PRINCIPAIS:
+  [N]ORMAL  <- PADRÃO (navegação/comandos)  | Esc
+  [I]NSERT  <- Editar texto                 | i/a/o/O
+  [V]ISUAL  <- Selecionar                   | v/V/Ctrl+v
+  [C]MDLINE <- Comandos :                   | :
+EOF
+
+# MOVIMENTAÇÃO
+echo "📍 MOVIMENTAÇÃO:"
+cat << 'EOF'
+BÁSICA:  h j k l  (← ↓ ↑ →)
+PALAVRA: w b      (próxima/anterior)
+LINHA:   0 $      (início/fim)
+TELA:    Ctrl+u/d (metade ↑/↓)
+EOF
+
+# INSERT
+echo "✏️  INSERT MODE:"
+cat << 'EOF'
+i     <- INSERT antes cursor
+a     <- INSERT após cursor  
+o     <- NOVA LINHA abaixo
+O     <- NOVA LINHA acima
+Esc   <- VOLTAR NORMAL MODE
+EOF
+
+# COMANDOS NORMALS
+echo "⚡ COMANDOS NORMAL MODE:"
+cat << 'EOF'
+dd     <- Apagar linha
+yy     <- Copiar linha
+pp     <- Colar
+u      <- Undo
+Ctrl+r <- Redo
+
+x      <- Apagar char
+>>     <- Indentar
+<<     <- Desindentar
+.      <- Repetir último comando
+EOF
+
+# VISUAL
+echo "🎨 VISUAL MODE:"
+cat << 'EOF'
+v          <- Visual CHAR
+V          <- Visual LINE  
+Ctrl+v     <- Visual BLOCK
+y          <- Copiar seleção
+d          <- Cortar seleção
+p          <- Colar
+EOF
+
+# BUSCA
+echo "🔍 BUSCA/SUBSTITUIR:"
+cat << 'EOF'
+/texto     <- Buscar ↓ (Enter=n, N=↑)
+?texto     <- Buscar ↑
+:%s/velho/novo/g  <- Substituir TUDO
+gg         <- Início arquivo
+G          <- Fim arquivo
+EOF
+
+# ARQUIVOS
+echo "📁 ARQUIVOS:"
+cat << 'EOF'
+:w          <- Salvar
+:q          <- Sair (se limpo)
+:q!         <- Forçar sair
+:wq         <- Salvar+sair
+:e arquivo  <- Abrir arquivo
+:sp         <- Split horizontal
+:vs         <- Split vertical
+Ctrl+w w    <- Trocar janelas
+EOF
+
+# LSP (Neovim 0.11+ NATIVE)
+echo "🧑‍💻 LSP NATIVO (SEM PLUGINS!):"
+cat << 'EOF'
+gd          <- Ir definição
+K           <- Docs/hover
+<leader>ca  <- Code actions
+:checkhealth lsp   <- Status LSP
+
+# Instalar servers:
+npm i -g pyright bash-language-server lua-language-server
+EOF
+
+# TEU WORKFLOW
+echo "💻 TEU WORKFLOW (Linux/Scripts):"
+cat << 'EOF'
+Leader: Espaço (mapleader=" ")
+<Space>ff   <- Telescope files (se tiver)
+<Space>fg   <- Live grep
+:terminal    <- Terminal integrado
+Ctrl+\ Ctrl+n <- Sair terminal
+
+# Config mínima ~/.config/nvim/init.lua:
+vim.lsp.enable('lua_ls')
+vim.lsp.enable('bashls')
+vim.lsp.enable('pyright')
+EOF
+
+# STATUS
+echo "✅ CHECKLIST NEOVIM PRONTO:"
+cat << 'EOF'
+[ ] nvim --version (0.11+)
+[ ] mkdir -p ~/.config/nvim
+[ ] npm i -g servers LSP
+[ ] :Tutor  (tutorial oficial)
+[ ] :checkhealth  (diagnóstico)
+EOF
+
+echo ""
+echo "🚀 PRONTO! Neovim + LSP nativo domina!"
+echo "💾 Salve: chmod +x neovim-manual.sh"
+echo "📖 Use: ./neovim-manual.sh  ou  cat neovim-manual.sh"
