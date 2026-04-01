@@ -1,0 +1,16 @@
+#Resumo para criar novo historico de commits do GitHub
+
+1.0 git checkout --orphan new-main  → Cria main LIMPO
+
+2.0 git add -A                      → Adiciona todos os arquivos
+
+3.0 git commit -m "historico novo"  → Nova commit inicial
+
+4.0 git branch -D main              → Mata main VELHO
+
+5.0 git branch -m main              → **new-main VIRA main**
+
+5.1 git branch -M main              (subistitui passo 4 e 5)
+
+6.0 git push origin main            → GitHub recebe main LIMPO ( use --force-with-lease para um push menos agressivo )
+
