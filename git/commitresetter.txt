@@ -14,3 +14,4 @@
 
 6.0 git push origin main            → GitHub recebe main LIMPO ( use --force-with-lease para um push menos agressivo )
 
+7.0 git push --set-upstream origin main (Devido  ser um novo  branch, o tracker para de funcionar, use esse comando para voltar a funcionar)
