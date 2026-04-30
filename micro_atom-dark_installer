@@ -1,0 +1,36 @@
+#!/user/bin/env bash
+
+#-----------Definição das cores ANSI-----------
+YELLOW="\u001B[1;93m"
+GREEN_BOLD="\u001B[1;32m"
+CYAN_BOLD="\u001B[1;36m"
+GREEN_LIGHT="\u001B[1;92m"
+CYAN="\u001B[1;36m"
+GREEN="\u001B[1;92m"
+CYAN_LIGHT="\u001B[96m"
+RED_BOLD="\u001B[1;91m"
+YELLOW_BOLD="\u001B[1;93m"
+BLUE_LIGHT="\u001B[1;94m"
+PURPLE_LIGHT="\u001B[1;95m"
+RESET="\u001B[0m"
+
+sudo apt install micro
+
+printf "%bConfigurando Micro (Atom-Dark nativo)...%b\n" "$YELLOW_BOLD" "$RESET"
+
+mkdir -p "${HOME}/.config/micro"
+cat >"${HOME}/.config/micro/settings.json" <<'MICROEOF'
+{
+    "colorscheme": "atom-dark",
+    "tabsize": 2,
+    "tabstospaces": true,
+    "mouse": true,
+    "clipboard": "external",
+    "ruler": true
+}
+MICROEOF
+
+#-------------Aplica config via micro command-------------
+micro -config-dir "${HOME}/.config/micro" --plugin togglemacro +":set colorscheme atom-dark\n:quit\n" /dev/null >/dev/null 2>&1
+
+printf "%b[✔] Micro Atom-Dark ativo!%b\n" "$GREEN_BOLD" "$RESET"
