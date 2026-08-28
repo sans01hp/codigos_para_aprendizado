@@ -1,0 +1,85 @@
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
+-- 1. Tabela de Clientes com dados sensíveis criptografados (BYTEA)
+CREATE TABLE clientes_criptografados (
+    cliente_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    nome VARCHAR(100) NOT NULL,
+    email_criptografado BYTEA NOT NULL,
+    cpf_criptografado BYTEA NOT NULL,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. Tabela de Produtos (mantém catálogo público)
+CREATE TABLE produtos_criptografados (
+    produto_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    nome VARCHAR(150) NOT NULL,
+    descricao TEXT,
+    preco NUMERIC(10, 2) NOT NULL CHECK (preco >= 0),
+    estoque INT NOT NULL DEFAULT 0
+);
+
+-- 3. Tabela de Pedidos (Total do pedido mascarado/criptografado)
+CREATE TABLE pedidos_criptografados (
+    pedido_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    cliente_id UUID NOT NULL REFERENCES clientes_criptografados(cliente_id),
+    status VARCHAR(50) NOT NULL DEFAULT 'Aguardando Pagamento',
+    total_criptografado BYTEA NOT NULL,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 4. Itens do Pedido (Valores unitários criptografados)
+CREATE TABLE itens_pedido_criptografados (
+    item_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    pedido_id UUID NOT NULL REFERENCES pedidos_criptografados(pedido_id) ON DELETE CASCADE,
+    produto_id UUID NOT NULL REFERENCES produtos_criptografados(produto_id),
+    quantidade INT NOT NULL CHECK (quantidade > 0),
+    preco_unitario_criptografado BYTEA NOT NULL
+);
+
+-- ============================================================================
+-- EXEMPLO DE USO COM CRIPTOGRAFIA / DESCRIPTOGRAFIA
+-- Chave Secreta Exemplo: 'MinhaChaveS3creta'
+-- ============================================================================
+
+-- Inserindo cliente com CPF e Email Criptografados
+INSERT INTO clientes_criptografados (nome, email_criptografado, cpf_criptografado)
+VALUES (
+    'João Souza',
+    pgp_sym_encrypt('joao@email.com', 'MinhaChaveS3creta'),
+    pgp_sym_encrypt('987.654.321-11', 'MinhaChaveS3creta')
+);
+
+INSERT INTO produtos_criptografados (nome, descricao, preco, estoque) 
+VALUES ('Smartphone X', '128GB, Tela 6.1', 2500.00, 20);
+
+-- Criando pedido com valores criptografados
+DO $$
+DECLARE
+    v_cliente_id UUID;
+    v_produto_id UUID;
+    v_pedido_id UUID;
+    v_chave TEXT := 'MinhaChaveS3creta';
+BEGIN
+    SELECT cliente_id INTO v_cliente_id FROM clientes_criptografados LIMIT 1;
+    SELECT produto_id INTO v_produto_id FROM produtos_criptografados LIMIT 1;
+
+    -- Inserir Pedido criptografando o Total (convertido para texto antes)
+    INSERT INTO pedidos_criptografados (cliente_id, total_criptografado) 
+    VALUES (v_cliente_id, pgp_sym_encrypt('2500.00', v_chave)) 
+    RETURNING pedido_id INTO v_pedido_id;
+
+    -- Inserir Item do Pedido criptografando o preço unitário
+    INSERT INTO itens_pedido_criptografados (pedido_id, produto_id, quantidade, preco_unitario_criptografado)
+    VALUES (v_pedido_id, v_produto_id, 1, pgp_sym_encrypt('2500.00', v_chave));
+END $$;
+
+-- Consulta para LER e DESCRIPTOGRAFAR os dados
+-- SELECT 
+--     p.pedido_id,
+--     c.nome AS cliente,
+--     pgp_sym_decrypt(c.email_criptografado, 'MinhaChaveS3creta') AS email_descriptografado,
+--     pgp_sym_decrypt(c.cpf_criptografado, 'MinhaChaveS3creta') AS cpf_descriptografado,
+--     p.status,
+--     pgp_sym_decrypt(p.total_criptografado, 'MinhaChaveS3creta')::numeric AS total_pedido
+-- FROM pedidos_criptografados p
+-- JOIN clientes_criptografados c ON p.cliente_id = c.cliente_id;
