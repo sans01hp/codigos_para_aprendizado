@@ -1,0 +1,161 @@
+# =========================================================
+# COLA — CLASSES E DATACLASS
+# =========================================================
+
+
+# ---------- CLASSE NORMAL ----------
+
+# Uma classe define a estrutura e o comportamento de um objeto.
+class Dominio:
+
+    # __init__ é executado quando o objeto é criado.
+    # self representa o próprio objeto.
+    def __init__(self, nome: str, portas: list):
+        self.nome = nome
+        self.portas = portas
+
+
+# Criando um objeto a partir da classe:
+alvo = Dominio("example.com", [80, 443])
+
+# Acessando atributos:
+print(alvo.nome)
+print(alvo.portas)
+
+# Adicionando dados à lista:
+alvo.portas.append(8080)
+
+
+# =========================================================
+# DATACLASS
+# =========================================================
+
+# Dataclass automatiza partes repetitivas de uma classe,
+# principalmente o __init__ e métodos relacionados aos dados.
+
+from dataclasses import dataclass
+
+
+@dataclass
+class Dominio:
+    nome: str
+    portas: list
+
+
+# O __init__ é criado automaticamente.
+alvo = Dominio("example.com", [80, 443])
+
+
+# =========================================================
+# EQUIVALÊNCIA
+# =========================================================
+
+# Isto:
+
+@dataclass
+class Dominio:
+    nome: str
+    portas: list
+
+
+# É aproximadamente equivalente a:
+
+class Dominio:
+    def __init__(self, nome: str, portas: list):
+        self.nome = nome
+        self.portas = portas
+
+
+# =========================================================
+# TYPE HINTS
+# =========================================================
+
+# ": str" e ": list" são anotações de tipo.
+# NÃO são os valores.
+
+nome: str
+portas: list
+
+# str  → espera-se uma string
+# list → espera-se uma lista
+
+# Os valores são passados ao criar o objeto:
+
+alvo = Dominio("example.com", [80, 443])
+
+
+# =========================================================
+# OBJETO
+# =========================================================
+
+# Classe → molde
+# Objeto → instância criada a partir do molde
+
+@dataclass
+class Dominio:
+    nome: str
+    portas: list
+
+
+alvo = Dominio("example.com", [80, 443])
+
+# alvo é o objeto
+# alvo.nome → "example.com"
+# alvo.portas → [80, 443]
+
+
+# =========================================================
+# LISTAS DENTRO DE OBJETOS
+# =========================================================
+
+@dataclass
+class Dominio:
+    nome: str
+    portas: list
+
+
+alvo = Dominio("example.com", [])
+
+# [] cria uma lista vazia.
+
+alvo.portas.append(80)
+alvo.portas.append(443)
+
+# Resultado:
+# alvo.portas → [80, 443]
+
+
+# =========================================================
+# RESUMO
+# =========================================================
+
+# class
+#   → cria o molde da classe
+
+# __init__
+#   → inicializa o objeto
+
+# self
+#   → representa o próprio objeto
+
+# self.nome
+#   → atributo pertencente ao objeto
+
+# @dataclass
+#   → automatiza código repetitivo da classe
+
+# str / int / list
+#   → type hints (anotações de tipo)
+
+# Classe:
+#   Dominio
+
+# Objeto:
+#   alvo = Dominio("example.com", [80, 443])
+
+# Atributos:
+#   alvo.nome
+#   alvo.portas
+
+# Lista:
+#   alvo.portas.append(80)
