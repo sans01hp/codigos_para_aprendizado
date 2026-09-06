@@ -1,0 +1,251 @@
+// questão 1
+
+let trabalhadores= [
+    {
+        nome: "Airlton",
+        idade: 60,
+        anosTrabalhados: 30
+    },
+    {
+        nome: "Jerfesson",
+        idade: 59,
+        anosTrabalhados: 28
+    
+    }
+        
+]
+
+for (let trabalhador of trabalhadores) {
+    if (trabalhador.idade >= 60 && trabalhador.anosTrabalhados >= 30) {
+        console.log(`${trabalhador.nome} pode se aposentar`)
+    
+    
+    }else{
+        console.log(`${trabalhador.nome} não pode se aposentar`)
+    }
+}
+// questão 2
+
+let lista= [57, 30]
+
+for (let num of lista){
+    if (num >=20 && num <= 40) {
+        console.log(`o numero ${num} está entre 20 e 40`)
+    }else{
+        console.log(`o numero ${num} está fora do intervalo`)
+    }
+}
+
+//questão 3
+let numeros= [44, 53, 10, 15, 16]
+for (numero of numeros) {
+    if (numero %2==0) {
+        console.log(`${numero} é par`)
+    }else{
+        console.log(`${numero} é impar`)
+    }
+}
+
+//questão 4
+
+let alunos= [
+    {
+        nome: "gustavo",
+        nota: 8,
+        falta: 0
+    },
+    {
+        nome: "Jossemara",
+        nota: 7,
+        falta: 3
+    },
+    {
+        nome: "rodolfo",
+        nota: 6,
+        falta: 0
+    }
+]
+for (let aluno of alunos) {
+    if (aluno.falta > 0 || aluno.nota < 7) {
+    console.log(`${aluno.nome} reprovado`)
+    }else{
+        console.log(`${aluno.nome} aprovado`)
+        
+    }
+}
+
+// questão 5
+// qualquer semelhança é mera conhecidencia
+let penetra= {nome: "Alisson", documento: false, idade: 19}
+let convidado= {nome: "otavio", documento: true, idade: 20}
+let menor= {nome: "reginaldo", documento: true, idade: 16}
+let fila= [penetra, convidado, menor]
+for (let pessoa of fila) {
+    if (pessoa.documento == false) {
+        console.log(`${pessoa.nome} não pode entrar pois esta sem documento`)        
+    }else if (pessoa.idade <18) {
+        console.log(`${pessoa.nome} não pode entrar pois é de menor`)
+    }else{
+        console.log(`${pessoa.nome} pode entrar`)        
+    }
+}
+
+//questão 6
+
+idadeQ6= [14, 25, 76, 11]
+
+for(let gente of idadeQ6) {
+    if (gente < 18 && gente >=13) {
+        console.log("adolecente")
+    }else if (gente >=18 && gente <= 59) {
+        console.log("adulto")
+    }else if (gente >=60) {
+        console.log("idoso")
+    }else{
+        console.log("criança")
+    }
+}
+ //questão 7
+let parOuImpar= [23, 78, 44, 63, 50, 22, 67]
+for (let nparimpar of parOuImpar) {
+    if (nparimpar %2==0) {
+        console.log(`${nparimpar} é par`)
+    }else {
+        console.log(`${nparimpar} é impar`)
+    }
+}
+//questão 8
+
+let senha= 123
+
+let senhas=[665,567,220,102,123]
+
+for (tentativa of senhas) {
+    if (tentativa === senha) {
+        console.log(`sucesso`)
+    }else {
+        console.log(`falha`)
+        
+    }
+}
+
+//questão 9
+
+let quatro= 4
+if (quatro %4 == 0 && quatro > 0) {
+    console.log(` numero positivo e multiplo de quatro`)
+}
+
+//questão 10
+
+let temperaruras= [36.5, 40]
+for (let temp of temperaruras) {
+    if (temp >= 36 && temp <= 37.5) {
+    console.log(`${temp}° graus! sua temperarura está normal`)
+    }else {
+    console.log(`${temp}° graus! para de ficar olhando o termometro e vá ao medico!`)
+   }
+}
+
+//questão 11
+
+let notas= [10, 5, 3, 7, 4, 8, 6.5]
+for (let passou of notas) {
+    if (passou < 5) {
+        console.log(`nota ${passou}, reprovado`)
+    }else if (passou >= 5 && passou <=6.9) {
+        console.log(`nota ${passou}, recuperação`)
+    }else {
+        console.log(`parabens, você passou com a nota: ${passou}`)
+    }
+}
+
+//questão 12
+
+let consumo= [90, 160, 220]
+for (let wats of consumo) {
+    if (wats < 100) {
+        console.log(`baixo consumo: ${wats}`)
+    }else if (wats >=100 && wats <=200) {
+        console.log(`consumo medio: ${wats}`)
+    }else {
+        console.log(`energia não dá em àrvore! consumo alto: ${wats}`)
+    }
+}
+
+//questão 13
+
+let turnos= [
+    {
+        periodo: "M", 
+        nome: "jessica"
+    },
+    {
+        periodo: "V",
+        nome: "amanda"
+    },
+    {
+        periodo: "N",
+        nome: "astolfo"
+    },
+    {
+        periodo: "suspenso",
+        nome: "alan"
+    }
+]
+
+for (let horario of turnos) {
+    if (horario.periodo == "M") {
+        console.log(`${horario.nome} estuda no turno matutino`)
+    }else if (horario.periodo == "V") {
+        console.log(`${horario.nome} estuda no turno vespertino`)
+    }else if (horario.periodo == "N") {
+        console.log(`${horario.nome} estuda no turno noturno`)
+    }else {
+        console.log(`${horario.nome} não está listado como tendo turno. motivo: ${horario.periodo}`)
+    }
+}
+
+//questão 14
+
+let ingressos= [7, 15, 30, 80]
+for (let idadeingresso of ingressos) {
+    if (idadeingresso <12) {
+        console.log("ingresso infantil")
+    }else if (idadeingresso >= 12 && idadeingresso <= 17) {
+        console.log("ingresso adolecente")
+    }else if (idadeingresso >= 18 && idadeingresso <= 59) {
+        console.log("ingresso adulto")
+    }else {
+        console.log("ingresso idoso")
+    }
+}
+
+// questão 15
+
+let carros=[
+    {
+        nome: "kombi",
+        km: 30
+    },
+    {
+        nome: "Ferrari",
+        km: 60
+    },
+    {
+        nome: "Uno com escada",
+        km: 320
+    }
+]
+
+for (const permitido of carros) {
+    if (permitido.km < 40) {
+        console.log(`${permitido.nome} está muito lento, velocidade de ${permitido.km} km/h`)
+    }else if (permitido.km >=40 && permitido.km <= 80) {
+        console.log(`${permitido.nome} está na velocidade permitida, velocidade de: ${permitido.km} km/h`)
+    }else {
+        if (permitido.km > 80) {
+            console.log(`${permitido.nome} está acima da velocidade permitida, velocidade de ${permitido.km} km/h`)
+        }
+    }
+}
